@@ -1,4 +1,4 @@
-#ifndef _WCZYTAJ_LABIRYNT_DOBRE__H
+#ifndef _WCZYTAJ_LABIRYNT_DOBRE_H
 #define _WCZYTAJ_LABIRYNT_DOBRE_H
 #include <stdio.h>
 //#include "graf.h"

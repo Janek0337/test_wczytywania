@@ -53,11 +53,10 @@ void wczytajPlik (FILE* plik, tab* t){
     char c;
     int i = 0;
     int j = 0;
-    while ((c = fgetc(plik)) != EOF){
-	    printf("Wczytano znak '%c' o kodzie '%d'\n",c,c);
+    while ((c = fgetc(plik) ) != EOF){
         if (czyDobryZnak(c) != 0){
             printf("'%c' to zly znak\n",c);
-            //return;
+            return;
         }
         if (c == '\n'){
             i++;

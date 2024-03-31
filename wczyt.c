@@ -24,7 +24,7 @@ short* wyznaczRozmiar (FILE* plik){
 }
 
 tab* stworzTablice(short* rozmiar) {
-		tab* t = (tab*) malloc(sizeof(tab));
+		tab* t = malloc(sizeof(tab));
 		if (t != NULL) {
 			t->r = rozmiar[0];
 			t->c = rozmiar[1];
@@ -57,7 +57,7 @@ void wczytajPlik (FILE* plik, tab* t){
 	    printf("Wczytano znak '%c' o kodzie '%d'\n",c,c);
         if (czyDobryZnak(c) != 0){
             printf("'%c' to zly znak\n",c);
-            return;
+            //return;
         }
         if (c == '\n'){
             i++;

@@ -8,10 +8,11 @@ typedef struct _tab{
 }tab;
 
 
-short* wyznaczRozmiar (FILE* plik);
+short* wyznaczRozmiarLabiryntu(FILE* plik);
 tab* stworzTablice(short* rozmiar);
 void zwolnijTablice(tab* t);
-void wczytajPlik(FILE* plik, tab* t);
+void wczytajPlikTxtDoTablicy(FILE* plik, tab* t);
 int czyDobryZnak(char c);
-void wypisz(tab* t);
+void wypiszTablice(tab* t);
+listaNodow stworzNody(tab* t, listaNodow* lista);
 #endif

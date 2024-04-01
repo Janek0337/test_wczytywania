@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "wczyt.h"
+#include "node_list.h"
 
-short* wyznaczRozmiar (FILE* plik){
+short* wyznaczRozmiarLabiryntu (FILE* plik){
     short* rozmiar = malloc (2*sizeof(short int));
     short a = 0;
     short b = 0;
@@ -49,14 +50,14 @@ int czyDobryZnak(char c){
     return 1;
 }
 
-void wczytajPlik (FILE* plik, tab* t){
+int wczytajPlikTxtDoTablicy (FILE* plik, tab* t){ //zwraca 0 gdy udalo sie wczytac plik poprawnie, 1 gdy znaleziono nieodpowiednie znaki
     char c;
     int i = 0;
     int j = 0;
     while ((c = fgetc(plik) ) != EOF){
         if (czyDobryZnak(c) != 0){
-            printf("'%c' to zly znak\n",c);
-            return;
+            fprintf(stderr,"'%c' to zly znak\n",c);
+            return 1;
         }
         if (c == '\n'){
             i++;
@@ -66,9 +67,10 @@ void wczytajPlik (FILE* plik, tab* t){
         t->buf[i][j] = c;
         j++;
     }
+    return 0;
 }
 
-void wypisz(tab* t){
+void wypiszTablice(tab* t){
     for(int i = 0; i < t->r; i++){
         for(int j = 0; j < t->c; j++){
             printf("%c",t->buf[i][j]);
@@ -77,3 +79,113 @@ void wypisz(tab* t){
     }
 }
 
+#define jedenZeZnakow(t, i, j) (t->buf[i][j] == ' ' || t->buf[i][j] == 'K' || t->buf[i][j] == 'P');
+
+int zprawej(tab* t,short i, short j){
+    if jedenZeZnakow(t,i,j+1) return 1;
+    return 0;
+}
+
+int zlewej(tab* t,short i, short j){
+    if jedenZeZnakow(t,i,j-1) return 1;
+    return 0;
+}
+
+int zgory(tab* t,short i, short j){
+    if jedenZeZnakow(t,i-1,j) return 1;
+    return 0;
+}
+
+int zdolu(tab* t,short i, short j){
+    if jedenZeZnakow(t,i+1,j) return 1;
+    return 0;
+}
+
+
+int czyToNode(tab*t, short i, short j, int mode) { // zasada dzialania int mode jak chmod
+    int wynik = 0;
+    int gora = 0;
+    int dol = 0;
+    int prawo = 0;
+    int lewo = 0;
+    if (mode & 1) { //gora
+        if (zgory(t,i,j) == 1){
+             wynik++;
+             gora = 1;
+        }
+    }
+    if (mode & 2) { //prawo
+        if (zprawej(t,i,j) == 1){
+            wynik++;
+            prawo = 1;
+        }
+    }
+    if (mode & 4) { //dol
+        if (zdolu(t,i,j) == 1){
+            wynik++;
+            dol = 1;
+        }
+    }
+    if (mode & 8) { //lewo
+        if (zlewej(t,i,j) == 1){
+            wynik++;
+            lewo = 1;
+        }
+    }
+    if((wynik >= 3) || (t->buf[i][j] == 'P') || (t->buf[i][j] == 'K')) return 1; // to skrzyzowanie
+    if (wynik == 2 && !((gora == 1 && dol == 1) || (prawo == 1 && dol == 1))) return 1; // to zakret
+    return 0;
+}
+
+listaNodow stworzNody(tab* t, listaNodow* lista){
+    node_t* nodeTymaczasowy = malloc(sizeof(node_t*));
+    nodeTymaczasowy = NULL;
+    listaNodow l = stworzListeNodow();
+    //czytam pierwszy rzad
+    for(int j = 1; j < t->c-1; j++){
+        if (czyToNode(t,0,j,14) == 1){
+            nodeTymaczasowy = init_node(0,j);
+            dodajDoListyNodow(l,nodeTymaczasowy);
+        }
+    }
+    //czytam wszystko bez pierwszego i bez ostatniego rzedu
+    for(int i = 0; i < t->r-1; i++){
+        for (int j = 0; t->c; j++){
+            if(j == 0){ //lewa banda
+                if(czyToNode(t,i,j,7) == 1){
+                    nodeTymaczasowy = init_node(i,j);
+                    dodajDoListyNodow(l,nodeTymaczasowy);
+                }
+            }
+            else if(j == t->c){ //prawa banda
+                if(czyToNode(t,i,j,13) == 1){
+                    nodeTymaczasowy = init_node(i,j);
+                    dodajDoListyNodow(l,nodeTymaczasowy);
+                }
+            }
+            else{ //wszystko inne
+                if(czyToNode(t,i,j,15) == 1){
+                    nodeTymaczasowy = init_node(i,j);
+                    dodajDoListyNodow(l,nodeTymaczasowy);
+                }
+            }
+        }
+    }
+    //czytam ostatni rzad
+    for (int j = 1; j < t->c-1; j++){
+        if(czyToNode(t,t->r-1,j,11) == 1){
+            nodeTymaczasowy = init_node(t->r-1,j);
+            dodajDoListyNodow(l,nodeTymaczasowy);
+        }
+    }
+    free(nodeTymaczasowy);
+    return l;
+}
+
+void polaczWertyklanie(tab* t, listaNodow l){
+
+}
+
+void polaczHoryzontalnie(tab* t, listaNodow l){
+    
+}

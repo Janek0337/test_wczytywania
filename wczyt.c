@@ -20,7 +20,7 @@ short* wyznaczRozmiarLabiryntu (FILE* plik){
     }
     rozmiar[0] = a; //rzedy
     rozmiar[1] = b/a; //kolumny
-    printf("Rozmiar tego labiryntu to: %d rzedow = rozmiar[0] x %d kolumn = rozmiar[1]\n",rozmiar[0],rozmiar[1]);
+    printf("Rozmiar tego labiryntu to: %d rzedow x %d kolumn\n",rozmiar[0],rozmiar[1]);
     return rozmiar;
 }
 

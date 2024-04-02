@@ -79,30 +79,34 @@ void wypiszTablice(tab* t){
     }
 }
 
-#define jedenZeZnakow(t, i, j) (t->buf[i][j] == ' ' || t->buf[i][j] == 'K' || t->buf[i][j] == 'P');
+int jedenZeZnakow(tab*t, short i, short j){
+    if(t->buf[i][j] == ' ' || t->buf[i][j] == 'K' || t->buf[i][j] == 'P') return 1;
+    return 0;
+}
 
 int zprawej(tab* t,short i, short j){
-    if jedenZeZnakow(t,i,j+1) return 1;
+    if (jedenZeZnakow(t,i,j+1) == 1) return 1;
     return 0;
 }
 
 int zlewej(tab* t,short i, short j){
-    if jedenZeZnakow(t,i,j-1) return 1;
+    if (jedenZeZnakow(t,i,j-1) == 1) return 1;
     return 0;
 }
 
 int zgory(tab* t,short i, short j){
-    if jedenZeZnakow(t,i-1,j) return 1;
+    if (jedenZeZnakow(t,i-1,j) == 1) return 1;
     return 0;
 }
 
 int zdolu(tab* t,short i, short j){
-    if jedenZeZnakow(t,i+1,j) return 1;
+    if (jedenZeZnakow(t,i+1,j) == 1) return 1;
     return 0;
 }
 
 
 int czyToNode(tab*t, short i, short j, int mode) { // zasada dzialania int mode jak chmod
+    if (jedenZeZnakow(t,i,j) != 1) return 0;
     int wynik = 0;
     int gora = 0;
     int dol = 0;
@@ -133,59 +137,64 @@ int czyToNode(tab*t, short i, short j, int mode) { // zasada dzialania int mode 
         }
     }
     if((wynik >= 3) || (t->buf[i][j] == 'P') || (t->buf[i][j] == 'K')) return 1; // to skrzyzowanie
-    if (wynik == 2 && !((gora == 1 && dol == 1) || (prawo == 1 && dol == 1))) return 1; // to zakret
+    if (wynik == 2 && !((gora == 1 && dol == 1) || (prawo == 1 && lewo == 1))) return 1; // to zakret
     return 0;
 }
 
-listaNodow stworzNody(tab* t, listaNodow* lista){
+listaNodow* stworzNody(tab* t, listaNodow* lista){
     node_t* nodeTymaczasowy = malloc(sizeof(node_t*));
     nodeTymaczasowy = NULL;
-    listaNodow l = stworzListeNodow();
+    stworzListeNodow(lista);
     //czytam pierwszy rzad
-    for(int j = 1; j < t->c-1; j++){
+    for(int j = 1; j < (t->c)-1; j++){
         if (czyToNode(t,0,j,14) == 1){
-            nodeTymaczasowy = init_node(0,j);
-            dodajDoListyNodow(l,nodeTymaczasowy);
+            printf("Dodaje noda na (0,%d)\n",j);
+            //nodeTymaczasowy = init_node(0,j);
+            //dodajDoListyNodow(l,nodeTymaczasowy);
         }
     }
     //czytam wszystko bez pierwszego i bez ostatniego rzedu
-    for(int i = 0; i < t->r-1; i++){
-        for (int j = 0; t->c; j++){
+    for(int i = 1; i < (t->r)-1; i++){
+        for (int j = 0; j < t->c; j++){
             if(j == 0){ //lewa banda
                 if(czyToNode(t,i,j,7) == 1){
-                    nodeTymaczasowy = init_node(i,j);
-                    dodajDoListyNodow(l,nodeTymaczasowy);
+                    printf("Dodaje noda na (%d,%d)\n",i,j);
+                    //nodeTymaczasowy = init_node(i,j);
+                    //dodajDoListyNodow(l,nodeTymaczasowy);
                 }
             }
-            else if(j == t->c){ //prawa banda
+            else if(j == (t->c)-1){ //prawa banda
                 if(czyToNode(t,i,j,13) == 1){
-                    nodeTymaczasowy = init_node(i,j);
-                    dodajDoListyNodow(l,nodeTymaczasowy);
+                    printf("Dodaje noda na (%d,%d)\n",i,j);
+                    //nodeTymaczasowy = init_node(i,j);
+                    //dodajDoListyNodow(l,nodeTymaczasowy);
                 }
             }
             else{ //wszystko inne
                 if(czyToNode(t,i,j,15) == 1){
-                    nodeTymaczasowy = init_node(i,j);
-                    dodajDoListyNodow(l,nodeTymaczasowy);
+                    printf("Dodaje noda na (%d,%d)\n",i,j);
+                    //nodeTymaczasowy = init_node(i,j);
+                    //dodajDoListyNodow(l,nodeTymaczasowy);
                 }
             }
         }
     }
     //czytam ostatni rzad
-    for (int j = 1; j < t->c-1; j++){
-        if(czyToNode(t,t->r-1,j,11) == 1){
-            nodeTymaczasowy = init_node(t->r-1,j);
-            dodajDoListyNodow(l,nodeTymaczasowy);
+    for (int j = 1; j < (t->c)-1; j++){
+        if(czyToNode(t,(t->r)-1,j,11) == 1){
+            printf("Dodaje noda na (%d,%d)\n",t->r-1,j);
+            //nodeTymaczasowy = init_node(t->r-1,j);
+            //dodajDoListyNodow(l,nodeTymaczasowy);
         }
     }
     free(nodeTymaczasowy);
-    return l;
+    return lista;
 }
 
-void polaczWertyklanie(tab* t, listaNodow l){
+/*void polaczWertyklanie(tab* t, listaNodow l){
 
 }
 
 void polaczHoryzontalnie(tab* t, listaNodow l){
     
-}
+}*/

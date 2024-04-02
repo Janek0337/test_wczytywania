@@ -10,12 +10,12 @@ typedef struct n {
 typedef struct lista{
     int n;
     node_t** nody;
-}*listaNodow;
+}listaNodow;
 
-listaNodow stworzListeNodow();
-void dodajDoListyNodow(listaNodow lista, node_t* n);
-void zwolnijListeNodow(listaNodow lista);
-listaNodow istniejeTakiNode(listaNodow lista, node_t* n);
+void stworzListeNodow();
+void dodajDoListyNodow(listaNodow* lista, node_t* node);
+void zwolnijListeNodow(listaNodow* lista);
+node_t* istniejeTakiNode(listaNodow* lista, node_t* n);
 
 
 #endif

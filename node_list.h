@@ -15,7 +15,7 @@ typedef struct lista{
 void stworzListeNodow();
 void dodajDoListyNodow(listaNodow* lista, node_t* node);
 void zwolnijListeNodow(listaNodow* lista);
-node_t* istniejeTakiNode(listaNodow* lista, node_t* n);
+node_t* istniejeTakiNode(listaNodow* lista, short x, short y);
 
 
 #endif

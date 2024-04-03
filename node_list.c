@@ -32,9 +32,9 @@ void zwolnijListeNodow(listaNodow* lista){
     }
 }
 
-node_t* istniejeTakiNode(listaNodow* lista, node_t* n){
+node_t* istniejeTakiNode(listaNodow* lista, short x, short y){
     for (int i = 0; i < lista->n; i++){
-        if(lista->nody[i]->x == n->x && lista->nody[i]->y == n->y) return lista->nody[i];
+        if(lista->nody[i]->x == x && lista->nody[i]->y == y) return lista->nody[i];
         return lista->nody[i];
     }
     return NULL;

@@ -21,7 +21,7 @@ void txtNaGraf(FILE* plik){
 
 int main(){
     FILE* plik;
-    plik = fopen(".\\test_wczytywania\\test.txt","r");
+    plik = fopen("test.txt","r");
     if (plik == NULL) {
         printf("Nie udalo otworzyc sie pliku\n");
         return 1;

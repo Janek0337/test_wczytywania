@@ -191,10 +191,64 @@ listaNodow* stworzNody(tab* t, listaNodow* lista){
     return lista;
 }
 
-/*void polaczWertyklanie(tab* t, listaNodow l){
-
+void polaczHoryzontalnie(tab* t, listaNodow* l){
+    node_t* n1 = malloc(sizeof(node_t*));
+    node_t* n2 = malloc(sizeof(node_t*));
+    n1 = NULL;
+    n2 = NULL;
+    for(int i = 0; i < t->r; i++){
+        for (int j = 0; j < t->c; j++){
+            if(jedenZeZnakow(t,i,j) == 1){ //jesli tu moze byc przejscie/nod sprawczamy
+                if(n1 == NULL){ //jak nie ma nic na n1 to sprbuj zlapac za linke od tad jesli to node
+                    n1 = istniejeTakiNode(l,i,j);
+                }
+                else{ //jak mam sznurek z n1 to sprobuj go przyczepic tutaj
+                    n2 = istniejeTakiNode(l,i,j);
+                    if(n2 != NULL){
+                        link(n1,n2);
+                        n1 = n2;
+                        n2 = NULL;
+                    }
+                }
+            }
+            else{ //jesli trafilismy na sciane to puszczam sznurek
+                n1 = NULL;
+            }
+        }
+        n1 = NULL;
+        n2 = NULL;
+    }
+    free(n1);
+    free(n2);
 }
 
-void polaczHoryzontalnie(tab* t, listaNodow l){
-    
-}*/
+void polaczWertykalnie(tab* t, listaNodow* l){
+    node_t* n1 = malloc(sizeof(node_t*));
+    node_t* n2 = malloc(sizeof(node_t*));
+    n1 = NULL;
+    n2 = NULL;
+    for(int j = 0; j < t->c; j++){
+        for (int i = 0; i < t->r; i++){
+            if(jedenZeZnakow(t,i,j) == 1){ //jesli tu moze byc przejscie/nod sprawczamy
+                if(n1 == NULL){ //jak nie ma nic na n1 to sprbuj zlapac za linke od tad jesli to node
+                    n1 = istniejeTakiNode(l,i,j);
+                }
+                else{ //jak mam sznurek z n1 to sprobuj go przyczepic tutaj
+                    n2 = istniejeTakiNode(l,i,j);
+                    if(n2 != NULL){
+                        link(n1,n2);
+                        n1 = n2;
+                        n2 = NULL;
+                    }
+                }
+            }
+            else{ //jesli trafilismy na sciane to puszczam sznurek
+                n1 = NULL;
+            }
+        }
+        n1 = NULL;
+        n2 = NULL;
+    }
+    free(n1);
+    free(n2);
+}

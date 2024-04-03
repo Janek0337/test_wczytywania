@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "wczyt.h"
 #include "node_list.h"
+#include "graf.h"
 
 short* wyznaczRozmiarLabiryntu (FILE* plik){
     short* rozmiar = malloc (2*sizeof(short int));
@@ -46,8 +47,8 @@ void zwolnijTablice(tab* t) {
 }
 
 int czyDobryZnak(char c){
-    if (c == 'X' || c == 'P' || c == 'K' || c == ' ' || c == '\n') return 0;
-    return 1;
+    if (c == 'X' || c == 'P' || c == 'K' || c == ' ' || c == '\n') return 1;
+    return 0;
 }
 
 int wczytajPlikTxtDoTablicy (FILE* plik, tab* t){ //zwraca 0 gdy udalo sie wczytac plik poprawnie, 1 gdy znaleziono nieodpowiednie znaki
@@ -55,7 +56,7 @@ int wczytajPlikTxtDoTablicy (FILE* plik, tab* t){ //zwraca 0 gdy udalo sie wczyt
     int i = 0;
     int j = 0;
     while ((c = fgetc(plik) ) != EOF){
-        if (czyDobryZnak(c) != 0){
+        if (czyDobryZnak(c) != 1){
             fprintf(stderr,"'%c' to zly znak\n",c);
             return 1;
         }
@@ -141,39 +142,41 @@ int czyToNode(tab*t, short i, short j, int mode) { // zasada dzialania int mode 
     return 0;
 }
 
-listaNodow* stworzNody(tab* t, listaNodow* lista){
-    node_t* nodeTymaczasowy = malloc(sizeof(node_t*));
+listaNodow* stworzNody(tab* t, listaNodow* l){
+    node_t* nodeTymaczasowy = malloc(sizeof(node_t));
     nodeTymaczasowy = NULL;
-    stworzListeNodow(lista);
+    l = stworzListeNodow();
     //czytam pierwszy rzad
     for(int j = 1; j < (t->c)-1; j++){
+        printf("Sprawdzam (%d,%d)\n",0,j);
         if (czyToNode(t,0,j,14) == 1){
             printf("Dodaje noda na (0,%d)\n",j);
-            //nodeTymaczasowy = init_node(0,j);
+            nodeTymaczasowy = init_node(0,j);
             //dodajDoListyNodow(l,nodeTymaczasowy);
         }
     }
     //czytam wszystko bez pierwszego i bez ostatniego rzedu
     for(int i = 1; i < (t->r)-1; i++){
         for (int j = 0; j < t->c; j++){
+            printf("Sprawdzam (%d,%d)\n",i,j);
             if(j == 0){ //lewa banda
                 if(czyToNode(t,i,j,7) == 1){
                     printf("Dodaje noda na (%d,%d)\n",i,j);
-                    //nodeTymaczasowy = init_node(i,j);
+                    nodeTymaczasowy = init_node(i,j);
                     //dodajDoListyNodow(l,nodeTymaczasowy);
                 }
             }
             else if(j == (t->c)-1){ //prawa banda
                 if(czyToNode(t,i,j,13) == 1){
                     printf("Dodaje noda na (%d,%d)\n",i,j);
-                    //nodeTymaczasowy = init_node(i,j);
+                    nodeTymaczasowy = init_node(i,j);
                     //dodajDoListyNodow(l,nodeTymaczasowy);
                 }
             }
             else{ //wszystko inne
                 if(czyToNode(t,i,j,15) == 1){
                     printf("Dodaje noda na (%d,%d)\n",i,j);
-                    //nodeTymaczasowy = init_node(i,j);
+                    nodeTymaczasowy = init_node(i,j);
                     //dodajDoListyNodow(l,nodeTymaczasowy);
                 }
             }
@@ -181,14 +184,15 @@ listaNodow* stworzNody(tab* t, listaNodow* lista){
     }
     //czytam ostatni rzad
     for (int j = 1; j < (t->c)-1; j++){
+        printf("Sprawdzam (%d,%d)\n",t->c,j);
         if(czyToNode(t,(t->r)-1,j,11) == 1){
             printf("Dodaje noda na (%d,%d)\n",t->r-1,j);
-            //nodeTymaczasowy = init_node(t->r-1,j);
+            nodeTymaczasowy = init_node(t->r-1,j);
             //dodajDoListyNodow(l,nodeTymaczasowy);
         }
     }
     free(nodeTymaczasowy);
-    return lista;
+    return l;
 }
 
 void polaczHoryzontalnie(tab* t, listaNodow* l){
@@ -205,7 +209,8 @@ void polaczHoryzontalnie(tab* t, listaNodow* l){
                 else{ //jak mam sznurek z n1 to sprobuj go przyczepic tutaj
                     n2 = istniejeTakiNode(l,i,j);
                     if(n2 != NULL){
-                        link(n1,n2);
+                        //link_nodes(n1,n2);
+                        printf("Linkuje noda 1 (%d,%d) i noda 2 (%d,%d)\n",n1->x,n1->y,n2->x,n2->y);
                         n1 = n2;
                         n2 = NULL;
                     }
@@ -236,7 +241,8 @@ void polaczWertykalnie(tab* t, listaNodow* l){
                 else{ //jak mam sznurek z n1 to sprobuj go przyczepic tutaj
                     n2 = istniejeTakiNode(l,i,j);
                     if(n2 != NULL){
-                        link(n1,n2);
+                        //link_nodes(n1,n2);
+                        printf("Linkuje noda 1 (%d,%d) i noda 2 (%d,%d)\n",n1->x,n1->y,n2->x,n2->y);
                         n1 = n2;
                         n2 = NULL;
                     }

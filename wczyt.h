@@ -2,7 +2,7 @@
 #define _WCZYTAJ_LABIRYNT_DOBRE_H
 #include <stdio.h>
 #include "node_list.h"
-//#include "graf.h"
+#include "graf.h"
 typedef struct _tab{
     short r,c;
     char** buf;
@@ -16,4 +16,6 @@ int wczytajPlikTxtDoTablicy(FILE* plik, tab* t);
 int czyDobryZnak(char c);
 void wypiszTablice(tab* t);
 listaNodow* stworzNody(tab* t, listaNodow* lista); //tu moze byc problem potem bo nie wiem czy listaNodow* czy bez *
+void polaczHoryzontalnie(tab*t,listaNodow*l);
+void polaczWertykalnie(tab*t,listaNodow*l);
 #endif

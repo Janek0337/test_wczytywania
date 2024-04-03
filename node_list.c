@@ -4,21 +4,22 @@
 #include "node_list.h"
 
 
-void stworzListeNodow(listaNodow* lista){
-    lista = malloc(sizeof(*lista));
+listaNodow* stworzListeNodow(){
+    listaNodow* lista = malloc(sizeof(listaNodow));
     if(lista == NULL){
         fprintf(stderr,"Nie udalo sie zaalokowac pamieci na liste nodow\n");
-        return;
+        return NULL;
     }
     lista->n = 0;
     lista->nody = NULL;
+    return lista;
 }
 
 void dodajDoListyNodow(listaNodow* lista, node_t* node){
     lista->n++;
-    lista->nody = realloc(lista->nody,(lista->n)*sizeof(node_t*));
+    lista->nody = realloc(lista->nody,(lista->n)*sizeof(node_t));
     if(lista->nody == NULL){
-        fprintf(stderr,"Nie udalo sie dodac nowego elementu do tablicy\n");
+        printf("Nie udalo sie dodac nowego elementu do tablicy\n");
         return;
     }
     lista->nody[lista->n - 1] = node;

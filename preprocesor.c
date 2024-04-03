@@ -3,6 +3,7 @@
 #include "preprocesor.h"
 #include "node_list.h"
 #include "wczyt.h"
+#include "graf.h"
 
 void txtNaGraf(FILE* plik){
     tab* buf = stworzTablice(wyznaczRozmiarLabiryntu(plik));
@@ -12,11 +13,10 @@ void txtNaGraf(FILE* plik){
     listaNodow* l;
     stworzListeNodow(l);
     l = stworzNody(buf,l);
-    fseek(plik,0, SEEK_SET);
-    /*polaczHoryzontalnie();
-    fseek(plik,0, SEEK_SET);
-    polaczWertykalnie();
-*/
+    //polaczWertykalnie(buf,l);
+    //polaczHoryzontalnie(buf,l);
+    zwolnijListeNodow(l);
+    zwolnijTablice(buf);
 }
 
 int main(){

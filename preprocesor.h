@@ -1,15 +1,11 @@
 #ifndef _PREPROCESOR_H
 #define _PREPROCESOR_H
-
-#include "graf.h"
-#include "node_list.h"
-typedef struct wynik{
-    node_t* poczatek;
-    node_t* koniec;
-}wyniki;
+#include "nody.h"
+#include "wczytajPlikTxt.h"
 
 void txtNaGraf(FILE* plik);
+void polaczPoziomo(tab* t, listaNodow* l);
+void polaczPionowo(tab* t, listaNodow* l);
 int main();
-
 
 #endif

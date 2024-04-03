@@ -20,7 +20,10 @@ void increase(node_t *node) {
   node->count++;
 }
 
-void link_nodes(node_t *parent, node_t *child){
-  increase(parent);
-  parent->links[parent->count- 1 ] = child;
+void link_nodes(node_t* n1, node_t* n2){
+  increase(n1);
+  increase(n2);
+  n1->links[n1->count - 1 ] = n2;
+  n2->links[n2->count - 1 ] = n1;
+  printf("Linkuje n1(%d,%d) i n2(%d,%d)\n",n1->x,n1->y,n2->x,n2->y);
 }
